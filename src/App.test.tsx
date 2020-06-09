@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import App from './App';
 import mockData from './mock_data.json';
 import {PAGE_DATA_LIMIT as limit} from './constants';
@@ -23,6 +23,41 @@ describe('App Component',  () => {
     const {getAllByTestId} = render(<App mockData={newMockData}/>);
     let cards = getAllByTestId("card-image");
     expect(cards.length).toBeLessThanOrEqual(limit)
-    
   })
+
+  test('sort by title', () => {
+    
+
+    const {getAllByTestId, getByText} = render(<App mockData={newMockData} />);
+    fireEvent.click(getByText('Sort by Name'));
+
+    let expectedOrder = ['Central Creative Producer', 'Central Implementation Coordinator', 'Central Research Strategist'];
+    let renderedNames = getAllByTestId('name');
+    let firstThree = Array.from(renderedNames).slice(0,3);
+    firstThree.map((el, index) => expect(el.textContent).toEqual(expectedOrder[index]));
+  })
+
+  test('sort by date last edited', () => {
+    
+    let {getAllByTestId, getByText}  =render(<App mockData={newMockData} />);
+    fireEvent.click(getByText('Last edited'))
+
+    let expectedOrder = ['Chief Brand Orchestrator', 'Lead Solutions Engineer', 'Principal Operations Architect'];
+
+    let renderedNames = getAllByTestId('name');
+    let firstThree = Array.from(renderedNames).slice(0,3);
+    firstThree.map((el, index) => expect(el.textContent).toEqual(expectedOrder[index]));
+  })
+
+  test('reset button works', () => {
+    let {getAllByTestId, getByText} = render(<App mockData={newMockData} />)
+    fireEvent.click(getByText('Last edited'));
+    fireEvent.click(getByText('None'));
+    let expectedOrder = newMockData.slice(0, 3).map(({name}) => name);
+
+    let renderedNames = getAllByTestId('name');
+    let firstThree = Array.from(renderedNames).slice(0,3);
+    firstThree.map((el, index) => expect(el.textContent).toEqual(expectedOrder[index]));
+  })
+
 })
