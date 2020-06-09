@@ -3,6 +3,30 @@
   grid-template-columns: 1fr;
 }
 
+.pages-navigation{
+  display: flex;
+}
+
+.page-button{
+  border: 1px solid #524f4f;
+  background: #ffffff;
+  padding: 10px;
+  font-size: 1.2em;
+  border-radius: 5px;
+  min-width: 50px;
+  margin: 5px;
+}
+
+.selected{
+  background: black;
+  color: white;
+}
+
+.pages-navigation{
+  margin: 5px;
+  overflow-x: scroll;
+}
+
 @media(min-width: 600px){
   .cards-container{
 
