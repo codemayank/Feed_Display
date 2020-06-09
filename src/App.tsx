@@ -84,15 +84,51 @@ const App: FC<appProps> = ({mockData}) => {
   
   return (
     <div className="App">
-      <button onClick={() => action(Intents.resetSort)}>None</button>
-      <button onClick={() => action(Intents.sortByName)}>Sort by Name</button>
-      <button onClick={() => action(Intents.sortByDateEdited)}>Last edited</button>
-      
+      <div className="content-control">
+        <div className="button-group">
+          <button
+            className={`button-group-item ${
+              !sortByName && !sortByDateEdited ? "selected-button" : ""
+            }`}
+            onClick={() => action(Intents.resetSort)}
+          >
+            None
+          </button>
+          <button
+            className={`button-group-item ${
+              sortByName ? "selected-button" : ""
+            }`}
+            onClick={() => action(Intents.sortByName)}
+          >
+            Sort by Name
+          </button>
+          <button
+            className={`button-group-item ${
+              sortByDateEdited ? "selected-button" : ""
+            }`}
+            onClick={() => action(Intents.sortByDateEdited)}
+          >
+            Last edited
+          </button>
+        </div>
+      </div>
+
       <div className="pages-navigation">
-        {pages.map(({pageNo, selected}) => <button data-testid="page-nav-btn" key={pageNo} onClick={() => setOffset(pageNo - 1)} className={selected ? "page-button selected" : "page-button"}>{pageNo}</button>)}
+        {pages.map(({ pageNo, selected }) => (
+          <button
+            data-testid="page-nav-btn"
+            key={pageNo}
+            onClick={() => setOffset(pageNo - 1)}
+            className={selected ? "page-button selected" : "page-button"}
+          >
+            {pageNo}
+          </button>
+        ))}
       </div>
       <div className="cards-container">
-        {displyedItems.map(item => <Card key={item.dateLastEdited} {...item} />)}
+        {displyedItems.map((item) => (
+          <Card key={item.dateLastEdited} {...item} />
+        ))}
       </div>
     </div>
   );

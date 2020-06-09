@@ -22,6 +22,41 @@
   color: white;
 }
 
+.content-control{
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.button-group{
+  display: flex;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: fit-content;
+  
+  
+}
+
+.button-group-item{
+  border: none;
+  border-right: 1px solid black;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 5px 0px 0px 5px;
+}
+
+.selected-button{
+  background: #000000;
+  color: #ffffff
+}
+
+.button-group-item:last-child{
+  border: none;
+  border-radius: 5px;
+}
+
+
+
 .pages-navigation{
   margin: 5px;
   overflow-x: scroll;
