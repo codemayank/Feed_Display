@@ -14,8 +14,8 @@ const Card:FC<cardProps> = ({image, name, description, dateLastEdited}) => {
       <div className="card-image-wrapper">
         <img className="card-image" src={image} alt={name} />
       </div>
-      <div className="title">{name}</div>
-      <div className="description">{description}</div>
+      <div className="content-wrapper"><h3 className="title">{name}</h3>
+      <p className="description">{description}</p></div>
     </div>
   );
 
