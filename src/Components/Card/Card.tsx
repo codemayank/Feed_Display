@@ -14,7 +14,7 @@ const Card:FC<cardProps> = ({image, name, description, dateLastEdited}) => {
       <div className="card-image-wrapper">
         <img className="card-image" src={image} alt={name} data-testid="card-image" />
       </div>
-      <div className="content-wrapper"><h3 className="title">{name}</h3>
+      <div className="content-wrapper" ><h3 className="title" data-testid="name">{name}</h3>
       <p className="description">{description}</p></div>
     </div>
   );
