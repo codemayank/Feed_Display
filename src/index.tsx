@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import mockData from './mock_data.json';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App mockData={mockData} />
   </React.StrictMode>,
   document.getElementById('root')
 );
