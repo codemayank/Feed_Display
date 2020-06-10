@@ -1,15 +1,11 @@
 
-//TODO
-// Improve design
-// Add search feature
-// Add react router
-
 import React, {FC, useState} from 'react';
 import {PAGE_DATA_LIMIT as limit, Intents} from './constants';
 
 import './App.css';
 
 import Card from './Components/Card/Card';
+import TabularDisplay from './Components/TabularDisplay/TabularDisplay';
 
 
 
@@ -18,9 +14,9 @@ const App: FC<appProps> = ({mockData, match, history}) => {
   
   
   let [offset, setOffset] = useState<number>(0);
-  let [sortBy, setSortBy] = useState<number>(() => match.params.sortBy || Intents.resetSort);
+  let [sortBy, setSortBy] = useState<number>(() => (match && match.params.sortBy) || Intents.resetSort);
   
-  let [searchInput, setSearchInput] = useState<string>(() => match.params.searchBy || '');
+  let [searchInput, setSearchInput] = useState<string>(() => (match && match.params.searchBy) || '');
   
 
 
@@ -77,7 +73,7 @@ const App: FC<appProps> = ({mockData, match, history}) => {
 
 
 
-  let displyedItems: cardData[] = mockDataCopy.slice(offset, offset + limit);
+  let displayedItems: cardData[] = mockDataCopy.slice(offset, offset + limit);
   let totalPages: number = Math.ceil(mockDataCopy.length / limit);
 
   let pages: page[] = [];
@@ -90,11 +86,13 @@ const App: FC<appProps> = ({mockData, match, history}) => {
   }
 
   function setUrl(from: string){
-    if(from === 'search' && searchInput){
-      history.push(`/${sortBy}/${searchInput}`)
-    }
-    if(from === 'sort'){
-      history.push(`/${sortBy}/${searchInput ? searchInput : ''}`)
+    if(history){
+      if(from === 'search' && searchInput){
+        history.push(`/${sortBy}/${searchInput}`)
+      }
+      if(from === 'sort'){
+        history.push(`/${sortBy}/${searchInput ? searchInput : ''}`)
+      }
     }
   }
 
@@ -140,10 +138,11 @@ const App: FC<appProps> = ({mockData, match, history}) => {
         ))}
       </div>
       <div className="cards-container">
-        {displyedItems.map((item) => (
+        {displayedItems.map((item) => (
           <Card key={item.dateLastEdited} {...item} />
         ))}
       </div>
+      <TabularDisplay data={displayedItems} />
     </div>
   );
 }

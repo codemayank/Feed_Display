@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, getByTestId } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import App from './App';
 import mockData from './mock_data.json';
 import {PAGE_DATA_LIMIT as limit, Intents} from './constants';
@@ -81,6 +81,13 @@ describe('App Component',  () => {
     let searchTerm = 'Factor Assurance';
     let renderedNames = searchTestHelper(searchTerm, mockData, 'name');
     expect(renderedNames).toHaveLength(5);
+  })
+  test('Table is rendered', ()=>{
+    let {getByTestId} = render(<App mockData={newMockData} />);
+    let table = getByTestId('tabular-display');
+    expect(table).toBeInTheDocument()
+
+
   })
 
 })

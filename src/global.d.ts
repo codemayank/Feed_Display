@@ -11,8 +11,8 @@ interface params{
 }
 interface appProps{
   mockData: cardData[];
-  match: match<params>;
-  history: any;
+  match?: match<params>;
+  history?: any;
 }
 
 
