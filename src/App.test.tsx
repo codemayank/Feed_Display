@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, getByTestId } from '@testing-library/react';
 import App from './App';
 import mockData from './mock_data.json';
-import {PAGE_DATA_LIMIT as limit} from './constants';
+import {PAGE_DATA_LIMIT as limit, Intents} from './constants';
 
 describe('App Component',  () => {
   let newMockData = mockData;
@@ -28,8 +28,8 @@ describe('App Component',  () => {
   test('sort by title', () => {
     
 
-    const {getAllByTestId, getByText} = render(<App mockData={newMockData} />);
-    fireEvent.click(getByText('Sort by Name'));
+    const {getAllByTestId, getByTestId} = render(<App mockData={newMockData} />);
+    fireEvent.change(getByTestId('select-sort-by'), {target: {value: Intents.sortByName}});
 
     let expectedOrder = ['Central Creative Producer', 'Central Implementation Coordinator', 'Central Research Strategist'];
     let renderedNames = getAllByTestId('name');
@@ -39,8 +39,8 @@ describe('App Component',  () => {
 
   test('sort by date last edited', () => {
     
-    let {getAllByTestId, getByText}  =render(<App mockData={newMockData} />);
-    fireEvent.click(getByText('Last edited'))
+    let {getAllByTestId, getByTestId}  =render(<App mockData={newMockData} />);
+    fireEvent.change(getByTestId('select-sort-by'), {target: {value: Intents.sortByDateEdited}})
 
     let expectedOrder = ['Chief Brand Orchestrator', 'Lead Solutions Engineer', 'Principal Operations Architect'];
 
@@ -50,9 +50,9 @@ describe('App Component',  () => {
   })
 
   test('reset button works', () => {
-    let {getAllByTestId, getByText} = render(<App mockData={newMockData} />)
-    fireEvent.click(getByText('Last edited'));
-    fireEvent.click(getByText('None'));
+    let {getAllByTestId, getByTestId} = render(<App mockData={newMockData} />)
+    fireEvent.change(getByTestId('select-sort-by'), {target: {value:Intents.sortByDateEdited }});
+    fireEvent.change(getByTestId('select-sort-by'), {target: {value: Intents.resetSort}});
     let expectedOrder = newMockData.slice(0, 3).map(({name}) => name);
 
     let renderedNames = getAllByTestId('name');

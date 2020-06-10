@@ -1,29 +1,30 @@
 
+//TODO
+// Improve design
+// Add search feature
+// Add react router
 
 import React, {FC, useState} from 'react';
-import {PAGE_DATA_LIMIT as limit} from './constants';
+import {PAGE_DATA_LIMIT as limit, Intents} from './constants';
 
 import './App.css';
 
 import Card from './Components/Card/Card';
 
-enum Intents {
-  sortByName,
-  sortByDateEdited,
-  resetSort
-}
+
 
 
 const App: FC<appProps> = ({mockData}) => {
   
   let [offset, setOffset] = useState<number>(0);
-  let [sortByName, setSortByName] = useState<boolean>(false);
-  let [sortByDateEdited, setSortByDateEdited] = useState<boolean>(false);
+  let [sortBy, setSortBy] = useState<number>(Intents.resetSort);
+  let [searchInput, setSearchInput] = useState<string>('');
+  
 
 
   let mockDataCopy = [...mockData];
 
-  if(sortByName){
+  if(sortBy === Intents.sortByName){
     mockDataCopy.sort((a:cardData, b:cardData) => {
       if(a.name > b.name){
         return 1
@@ -35,7 +36,7 @@ const App: FC<appProps> = ({mockData}) => {
     })
   }
 
-  if(sortByDateEdited){
+  if(sortBy === Intents.sortByDateEdited){
     mockDataCopy.sort((a: cardData, b:cardData) => {
       let aTime: number = new Date(a.dateLastEdited).getTime();
       let bTime: number = new Date(b.dateLastEdited).getTime();
@@ -61,56 +62,26 @@ const App: FC<appProps> = ({mockData}) => {
     pages.push(page);
   }
 
-  function action(intent: number){
-    switch (intent) {
-      case Intents.sortByName:
-        setSortByName(true);
-        setSortByDateEdited(false);
-        break;
-      case Intents.sortByDateEdited:
-        setSortByDateEdited(true);
-        setSortByName(false);
-        break;
-      case Intents.resetSort:
-        setSortByDateEdited(false);
-        setSortByName(false);
-        break;
-      default:
-        break;
-    }
 
-  }
 
   
   return (
     <div className="App">
-      <div className="content-control">
-        <div className="button-group">
-          <button
-            className={`button-group-item ${
-              !sortByName && !sortByDateEdited ? "selected-button" : ""
-            }`}
-            onClick={() => action(Intents.resetSort)}
+      <div className="user-controls">
+        
+      <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="search" />        
+        <label className="sort">
+          Sort: &nbsp;
+          <select
+            
+            data-testid="select-sort-by"
+            onChange={(e) => setSortBy(Number(e.target.value))}
           >
-            None
-          </button>
-          <button
-            className={`button-group-item ${
-              sortByName ? "selected-button" : ""
-            }`}
-            onClick={() => action(Intents.sortByName)}
-          >
-            Sort by Name
-          </button>
-          <button
-            className={`button-group-item ${
-              sortByDateEdited ? "selected-button" : ""
-            }`}
-            onClick={() => action(Intents.sortByDateEdited)}
-          >
-            Last edited
-          </button>
-        </div>
+            <option value={Intents.resetSort}>None</option>
+            <option value={Intents.sortByName}>Name</option>
+            <option value={Intents.sortByDateEdited}>Date</option>
+          </select>
+        </label>
       </div>
 
       <div className="pages-navigation">
