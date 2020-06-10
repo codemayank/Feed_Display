@@ -30,18 +30,57 @@
 .user-controls{
   display: grid;
   grid-template-columns: 1fr;
+  padding: 15px;
+  box-shadow: 0 0 4px #d8d1d1;
+  padding-bottom: 5px;
+
+  
+}
+.sort{
+  padding: 10px 0px;
+  align-self: center;
+  border: none;
+  
+  
+}
+.sort-selection{
+  border: none;
+  background: #ffffff;
+
+
 }
 
-.sort{
-  padding: 15px;
+.search-input{
+
+  border: 1px solid #978e8e;
+  border-radius: 5px;
+  
+}
+
+.search-input{
+  margin-bottom: 10px;
+}
+
+.app-heading{
+  margin: 0px;
 }
 
 @media(min-width: 600px){
+  .search-input{
+    margin-bottom: none;
+    font-size: 1.5em;
+
+  }
   .user-controls{
-    grid-template-columns: repeat(2, 1fr) ;
+    grid-template-columns: repeat(3, 1fr) ;
   }
   .sort{
     justify-self: end;
+    font-size: 1.5em;
+
+  }
+  .sort-selection{
+    font-size: 1em;
   }
   .cards-container{
 
