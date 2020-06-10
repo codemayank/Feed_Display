@@ -14,12 +14,13 @@ import Card from './Components/Card/Card';
 
 
 
-const App: FC<appProps> = ({mockData}) => {
+const App: FC<appProps> = ({mockData, match, history}) => {
+  
   
   let [offset, setOffset] = useState<number>(0);
-  let [sortBy, setSortBy] = useState<number>(Intents.resetSort);
+  let [sortBy, setSortBy] = useState<number>(() => match.params.sortBy || Intents.resetSort);
   
-  let [searchInput, setSearchInput] = useState<string>('');
+  let [searchInput, setSearchInput] = useState<string>(() => match.params.searchBy || '');
   
 
 
@@ -88,6 +89,15 @@ const App: FC<appProps> = ({mockData}) => {
     pages.push(page);
   }
 
+  function setUrl(from: string){
+    if(from === 'search' && searchInput){
+      history.push(`/${sortBy}/${searchInput}`)
+    }
+    if(from === 'sort'){
+      history.push(`/${sortBy}/${searchInput ? searchInput : ''}`)
+    }
+  }
+
 
 
   
@@ -96,7 +106,7 @@ const App: FC<appProps> = ({mockData}) => {
       <div className="user-controls">
       <h1 className="app-heading">Feed</h1>
         
-        <input data-testid="search-input" className="search-input" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="Search" />
+        <input onBlur={() => setUrl('search')} data-testid="search-input" className="search-input" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="Search" />
         
         
         <label className="sort">
@@ -105,7 +115,10 @@ const App: FC<appProps> = ({mockData}) => {
             className="sort-selection"
             
             data-testid="select-sort-by"
-            onChange={(e) => setSortBy(Number(e.target.value))}
+            onChange={(e) => {
+              setSortBy(Number(e.target.value))
+              setUrl('sort')
+            }}
           >
             <option value={Intents.resetSort}>None</option>
             <option value={Intents.sortByName}>Name</option>
