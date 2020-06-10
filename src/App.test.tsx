@@ -4,6 +4,15 @@ import App from './App';
 import mockData from './mock_data.json';
 import {PAGE_DATA_LIMIT as limit, Intents} from './constants';
 
+function searchTestHelper(searchText: string, data: cardData[], testId: string){
+  let {getByTestId, getAllByTestId} = render(<App mockData={data} />);
+  let searchInput = getByTestId("search-input");
+  expect(searchInput).toBeInTheDocument();
+  fireEvent.change(searchInput, {target: {value: searchText}});
+  let renderedNames = getAllByTestId(testId);
+  return renderedNames;
+}
+
 describe('App Component',  () => {
   let newMockData = mockData;
   test('renders app component', () => {
@@ -59,5 +68,29 @@ describe('App Component',  () => {
     let firstThree = Array.from(renderedNames).slice(0,3);
     firstThree.map((el, index) => expect(el.textContent).toEqual(expectedOrder[index]));
   })
+  test('search by word sequence works', () => {
+    // let {getByTestId, getAllByTestId} = render(<App mockData={newMockData} />);
+    // let searchInput = getByTestId('search-input');
+    // expect(searchInput).toBeInTheDocument();
+    let searchTerm = "'Customer Assurance Liaison'";
+    // fireEvent.change(searchInput, {target: {value: searchTerm}});
+    // let renderedNames = getAllByTestId('name');
+    let renderedNames = searchTestHelper(searchTerm, mockData, 'name');
+    let expectedOutput = 'Customer Assurance Liaison';
+    expect(renderedNames).toHaveLength(1);
+    expect(renderedNames[0].textContent).toBe(expectedOutput);
+
+  })
+
+  test('search by multiple words works', () => {
+    
+    let searchTerm = 'Factor Assurance';
+    let renderedNames = searchTestHelper(searchTerm, mockData, 'name');
+    
+    expect(renderedNames).toHaveLength(5);
+    
+
+  })
 
 })
+

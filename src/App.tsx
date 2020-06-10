@@ -18,6 +18,7 @@ const App: FC<appProps> = ({mockData}) => {
   
   let [offset, setOffset] = useState<number>(0);
   let [sortBy, setSortBy] = useState<number>(Intents.resetSort);
+  
   let [searchInput, setSearchInput] = useState<string>('');
   
 
@@ -50,6 +51,31 @@ const App: FC<appProps> = ({mockData}) => {
     })
   }
 
+
+    mockDataCopy = mockDataCopy.filter(({name, description}) => {
+      let nameLowerCase: string = name.toLowerCase();
+      let descriptionLowerCase: string = description.toLowerCase();
+      if(!searchInput){
+        return true
+      }
+      let inDoubleQuotes = (searchInput[0] === '"' && searchInput[searchInput.length - 1] === '"');
+      let inSingleQuotes = (searchInput[0] === "'" && searchInput[searchInput.length - 1] === "'");
+      if(inDoubleQuotes || inSingleQuotes){
+        let searchTerm = searchInput.slice(1, -1);
+        searchTerm = searchTerm.toLowerCase();
+        
+        return nameLowerCase.includes(searchTerm) || descriptionLowerCase.includes(searchTerm);
+      }else{
+        let searchWords = searchInput.split(" ").map(word => word.toLowerCase());
+        return searchWords.reduce((foundWord: boolean, word:string) => {
+          
+          return foundWord || nameLowerCase.includes(word) || descriptionLowerCase.includes(word)
+        }, false)
+      }
+    })
+
+
+
   let displyedItems: cardData[] = mockDataCopy.slice(offset, offset + limit);
   let totalPages: number = Math.ceil(mockDataCopy.length / limit);
 
@@ -68,11 +94,15 @@ const App: FC<appProps> = ({mockData}) => {
   return (
     <div className="App">
       <div className="user-controls">
+      <h1 className="app-heading">Feed</h1>
         
-      <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="search" />        
+        <input data-testid="search-input" className="search-input" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="Search" />
+        
+        
         <label className="sort">
           Sort: &nbsp;
           <select
+            className="sort-selection"
             
             data-testid="select-sort-by"
             onChange={(e) => setSortBy(Number(e.target.value))}
