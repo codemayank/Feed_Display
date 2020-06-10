@@ -6,23 +6,25 @@
   margin: 10px;
   box-shadow: 0 0 5px 0px #bbadad;
   border-radius: 10px;
-  padding: 10px;
+
 
 
 
 }
 
 .card-image-wrapper{
-  padding: 20px;
-  border-bottom: 1px dashed #bbadad;
+
+  
 }
 
 .card-image{
 width: 100%;
+border-radius: 10px 10px 0px 0px;
 
 }
 
 .content-wrapper{
+  padding: 0px 10px;
   
 }
 
