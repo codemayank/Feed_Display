@@ -69,12 +69,7 @@ describe('App Component',  () => {
     firstThree.map((el, index) => expect(el.textContent).toEqual(expectedOrder[index]));
   })
   test('search by word sequence works', () => {
-    // let {getByTestId, getAllByTestId} = render(<App mockData={newMockData} />);
-    // let searchInput = getByTestId('search-input');
-    // expect(searchInput).toBeInTheDocument();
     let searchTerm = "'Customer Assurance Liaison'";
-    // fireEvent.change(searchInput, {target: {value: searchTerm}});
-    // let renderedNames = getAllByTestId('name');
     let renderedNames = searchTestHelper(searchTerm, mockData, 'name');
     let expectedOutput = 'Customer Assurance Liaison';
     expect(renderedNames).toHaveLength(1);
@@ -83,13 +78,9 @@ describe('App Component',  () => {
   })
 
   test('search by multiple words works', () => {
-    
     let searchTerm = 'Factor Assurance';
     let renderedNames = searchTestHelper(searchTerm, mockData, 'name');
-    
     expect(renderedNames).toHaveLength(5);
-    
-
   })
 
 })

@@ -5,8 +5,14 @@ interface cardData{
   dateLastEdited: string
 }
 
+interface params{
+  sortBy?: number;
+  searchBy?: string;
+}
 interface appProps{
   mockData: cardData[];
+  match: match<params>;
+  history: any;
 }
 
 
